@@ -26,4 +26,30 @@ module.exports = {
       inline_keyboard: [[{ text: 'Играть еще раз', callback_data: '/again' }]],
     }),
   },
+  taskOptions: {
+    reply_markup: JSON.stringify({
+      inline_keyboard: [
+        [
+          {
+            type: 'web_app',
+            text: 'Chat',
+            web_app: { url: 'https://wbschool-chat.ru/home' },
+          },
+        ],
+        [
+          {
+            text: 'Изменить существующую проблему',
+            callback_data: '/updateProblem',
+          },
+        ],
+      ],
+    }),
+  },
+  newProblemsOptions: {
+    reply_markup: JSON.stringify({
+      inline_keyboard: [
+        [{ text: 'Сообщить о проблеме', url: 'https://t.me/WBTasksBot' }],
+      ],
+    }),
+  },
 };
