@@ -7,8 +7,6 @@ export class AppService {
     return 'Hello World!';
   }
   constructor(private tgBotService: TgBotService) {
-    setTimeout(() => {
-      this.tgBotService.start();
-    }, 3000);
+    this.tgBotService.start();
   }
 }
