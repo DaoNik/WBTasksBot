@@ -14,7 +14,7 @@ import { User } from './tg-bot/user.model';
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.HOST,
-      port: 5432,
+      port: 6432,
       username: process.env.USERNAME,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
