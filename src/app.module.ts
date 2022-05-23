@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './tg-bot/user.model';
 import { TgBotModule } from './tg-bot/tg-bot.module';
+import { BoardModule } from './board/board.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TgBotModule } from './tg-bot/tg-bot.module';
       synchronize: true,
     }),
     TgBotModule,
+    BoardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
