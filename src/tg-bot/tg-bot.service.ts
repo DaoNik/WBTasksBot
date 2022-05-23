@@ -21,11 +21,13 @@ export class TgBotService {
   });
   chats = {};
 
-  startBot = async (chatId) => {
-    const user = await this.userModel.findOne(chatId);
+  startBot = async (chatId: number) => {
+    const user = await this.userModel.findOne({ where: { chatId } });
+
     if (!user) {
       await this.userModel.create({ chatId });
     }
+
     await this.bot.sendMessage(
       chatId,
       `Приветствую тебя в телеграм боте для управления задачами.
@@ -37,11 +39,16 @@ export class TgBotService {
     );
   };
 
-  sendInfo = async (chatId, msg) => {
-    const user = await this.userModel.findOne(chatId);
+  sendInfo = async (chatId: number, msg) => {
+    const user = await this.userModel.findOne({ where: { chatId } });
+
+    const name = msg.from.last_name
+      ? `${msg.from.first_name} ${msg.from.last_name}`
+      : msg.from.first_name;
+
     await this.bot.sendMessage(
       chatId,
-      `Тебя зовут ${msg.from.first_name} ${msg.from.last_name}, в игре у тебя правильных ответов ${user.right}, неправильных ${user.wrong}`,
+      `Тебя зовут ${name}, в игре у тебя правильных ответов ${user.right}, неправильных ${user.wrong}`,
     );
   };
 
@@ -107,7 +114,7 @@ export class TgBotService {
       if (data === '/updateProblem') {
         return this.bot.sendMessage(chatId, 'Пока что нечего менять...');
       }
-      const user = await this.userModel.findOne(chatId);
+      const user = await this.userModel.findOne({ where: { chatId } });
       if (data === this.chats[chatId].toString()) {
         user.right += 1;
         await this.bot.sendMessage(
