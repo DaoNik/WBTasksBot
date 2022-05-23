@@ -1,5 +1,5 @@
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
-import { Task } from './tasks/task.model';
+import { BoardColumn } from './tasks/column.model';
 
 @Table
 export class Board extends Model {
@@ -12,8 +12,8 @@ export class Board extends Model {
   })
   title: string;
 
-  @Column({ defaultValue: ['To do', 'In progress', 'Done'] })
-  columns: string[];
+  @HasMany(() => BoardColumn)
+  columns: BoardColumn[];
 
   @Column({ defaultValue: [] })
   authors: string[];
@@ -26,7 +26,4 @@ export class Board extends Model {
 
   @Column({ defaultValue: [] })
   categories: string[];
-
-  @HasMany(() => Task)
-  tasks: Task[];
 }
