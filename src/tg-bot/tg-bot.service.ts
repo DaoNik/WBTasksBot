@@ -16,7 +16,7 @@ export class TgBotService {
     private userModel: typeof User,
   ) {}
 
-  bot = new TelegramBot(process.env.TOKEN, {
+  bot = new TelegramBot('5000447819:AAGmOkOMJ37RSv1RYtSJiMNYpeb0czxeG-w', {
     polling: true,
   });
   chats = {};
