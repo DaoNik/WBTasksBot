@@ -3,8 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { TgBotService } from './tg-bot/tg-bot.service';
 import { User } from './tg-bot/user.model';
+import { TgBotModule } from './tg-bot/tg-bot.module';
 
 @Module({
   imports: [
@@ -22,9 +22,9 @@ import { User } from './tg-bot/user.model';
       autoLoadModels: true,
       synchronize: true,
     }),
-    SequelizeModule.forFeature([User]),
+    TgBotModule,
   ],
   controllers: [AppController],
-  providers: [AppService, TgBotService],
+  providers: [AppService],
 })
 export class AppModule {}
