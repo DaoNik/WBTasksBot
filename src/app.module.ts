@@ -5,7 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './tg-bot/user.model';
 import { TgBotModule } from './tg-bot/tg-bot.module';
-import { BoardModule } from './board/board.module';
+import { BoardModule } from './board/boards.module';
+import { Board } from './board/board.model';
+import { BoardColumn } from './board/tasks/column.model';
+import { Task } from './board/tasks/task.model';
 
 @Module({
   imports: [
@@ -19,7 +22,7 @@ import { BoardModule } from './board/board.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [User],
+      models: [User, Board, BoardColumn, Task],
       autoLoadModels: true,
       synchronize: true,
     }),

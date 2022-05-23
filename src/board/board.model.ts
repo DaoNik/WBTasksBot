@@ -1,4 +1,4 @@
-import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { BoardColumn } from './tasks/column.model';
 
 @Table
@@ -15,15 +15,15 @@ export class Board extends Model {
   @HasMany(() => BoardColumn)
   columns: BoardColumn[];
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   authors: string[];
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   respondents: string[];
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   tags: string[];
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   categories: string[];
 }

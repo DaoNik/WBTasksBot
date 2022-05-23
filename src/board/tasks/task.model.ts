@@ -1,6 +1,7 @@
 import {
   BelongsTo,
   Column,
+  DataType,
   ForeignKey,
   Model,
   Table,
@@ -28,15 +29,21 @@ export class Task extends Model {
   @Column({ defaultValue: '' })
   description: string;
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   authors: string[];
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   respondents: string[];
 
-  @Column({ defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   tags: string[];
 
   @Column({ defaultValue: '' })
   category: string;
+
+  @Column
+  priority: string;
+
+  @Column
+  status: string;
 }
