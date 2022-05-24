@@ -7,7 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Board } from '../board.model';
-import { Task } from './task.model';
+import { Task } from '../tasks/task.model';
 
 @Table
 export class BoardColumn extends Model {
