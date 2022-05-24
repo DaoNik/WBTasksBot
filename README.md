@@ -1,73 +1,94 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# WBTasksBot - серверное веб-приложение
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## О проекте
+Веб-приложение, отвечающее за работу телеграм-бота и таск-менеджера
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Используемые технологии
+- Nest.js
+- Node-telegram-bot-api
+- Typescript
+- Postgres
+- Sequelize
 
-## Description
+## Документация
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Ссылки на используемые модели данных
+Модель доски
+https://github.com/DaoNik/WBTasksBot/blob/main/src/board/board.model.ts
+Модель колонки
+https://github.com/DaoNik/WBTasksBot/blob/main/src/board/columns/column.model.ts
+Модель задачи
+https://github.com/DaoNik/WBTasksBot/blob/main/src/board/tasks/task.model.ts
 
-## Installation
+### Запросы
+GET / возвращает Hello World! нужен для проверки работы сервера
 
-```bash
-$ npm install
-```
+### Boards
+GET /boards заглушка для возврата всех досок, когда они понадобятся
 
-## Running the app
+GET /boards/:id возвращает доску по её id, включая массив ее колонок с их полями:
+- обязательный параметр id в запросе
 
-```bash
-# development
-$ npm run start
+POST /boards создает новую доску и возвращает ее:
+- обязательное поле title длинной от 4 до 100 символов 
+- необязательное поле authors массив строк (люди, которые будут использоваться при создании задач)
+- необязательное поле respondents массив строк (группы, отделы, которые будут использоваться при создании задач)
+- необязательное поле tags массив строк (теги, которые будут использоваться при создании задач)
+- необязательное поле categories массив строк (категории, которые будут использоваться при создании задач)
 
-# watch mode
-$ npm run start:dev
+PATCH /boards/:id изменяет доску и возвращает ее:
+- обязательный параметр id в запросе
+- необязательное поле title длинной от 4 до 100 символов 
+- необязательное поле authors массив строк (люди, которые будут использоваться при создании задач)
+- необязательное поле respondents массив строк (группы, отделы, которые будут использоваться при создании задач)
+- необязательное поле tags массив строк (теги, которые будут использоваться при создании задач)
+- необязательное поле categories массив строк (категории, которые будут использоваться при создании задач)
 
-# production mode
-$ npm run start:prod
-```
+### Columns
+GET /columns возвращает все колонки(возможно, будет удален за ненадобностью)
 
-## Test
+GET /columns/:id возвращает колонку и ее массив задач с их полями:
+- обязательные параметр id в запросе
 
-```bash
-# unit tests
-$ npm run test
+POST /columns создает новую колонку и возвращает её:
+- обязательное поле title длинной от 4 до 50 символов
+- обязательное поле boardId
 
-# e2e tests
-$ npm run test:e2e
+PATCH /columns/:id изменяет колонку и возвращает её: 
+- обязательный параметр id колонки
+- обязательное поле title длинной от 4 до 50 символов
 
-# test coverage
-$ npm run test:cov
-```
+DELETE /columns/:id удаляет колонку и !все задачи в ней! и возвращает её id:
+- обязательный параметр id колонки
 
-## Support
+### Tasks
+GET /tasks возвращает все задачи(возможно, будет удален за ненадобностью)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+GET /tasks/:id возвращает задачу по её id: 
+- обязательный параметр id задачи
 
-## Stay in touch
+POST /tasks создает задачу и возвращает её:
+- обязательное поле columnId число
+- обязательное поле title длинной от 4 до 100 символов
+- обязательное поле priority строка
+- обязательное поле status строка
+- необязательное поле description строка
+- необязательное поле authors строка
+- необязательное поле respondents массив строк
+- необязательное поле tags массив строк
+- необязательное поле category строка
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+PATCH /tasks/:id изменяет задачу:
+- обязательный параметр id
+- необязательное поле columnId число
+- необязательное поле title длинной от 4 до 100 символов
+- необязательное поле priority строка
+- необязательное поле status строка
+- необязательное поле description строка
+- необязательное поле authors строка
+- необязательное поле respondents массив строк
+- необязательное поле tags массив строк
+- необязательное поле category строка
 
-## License
-
-Nest is [MIT licensed](LICENSE).
+DELETE /tasks/:id удаляет задачу
+- обязательный параметр id
