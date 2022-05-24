@@ -20,10 +20,7 @@ export class Task extends Model {
   @BelongsTo(() => BoardColumn)
   column: BoardColumn;
 
-  @Column({
-    validate: { min: 4, max: 100 },
-    defaultValue: 'Без названия',
-  })
+  @Column
   title: string;
 
   @Column({ defaultValue: '' })
