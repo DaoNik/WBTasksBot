@@ -7,7 +7,7 @@ import { User } from './tg-bot/user.model';
 import { TgBotModule } from './tg-bot/tg-bot.module';
 import { BoardModule } from './board/boards.module';
 import { Board } from './board/board.model';
-import { BoardColumn } from './board/tasks/column.model';
+import { BoardColumn } from './board/columns/column.model';
 import { Task } from './board/tasks/task.model';
 
 @Module({
