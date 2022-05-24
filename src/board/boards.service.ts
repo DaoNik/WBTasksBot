@@ -1,3 +1,4 @@
+import { BoardColumn } from './columns/column.model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Board } from './board.model';
@@ -17,6 +18,7 @@ export class BoardsService {
       where: {
         id,
       },
+      include: [BoardColumn],
     });
   }
 
