@@ -6,10 +6,7 @@ export class Board extends Model {
   @Column({ primaryKey: true, unique: true, autoIncrement: true })
   id: number;
 
-  @Column({
-    validate: { min: 4, max: 100 },
-    defaultValue: 'Без названия',
-  })
+  @Column
   title: string;
 
   @HasMany(() => BoardColumn)

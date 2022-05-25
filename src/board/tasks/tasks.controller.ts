@@ -9,8 +9,11 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import { UpdateTaskDto } from '../dto/update-task.dto';
+import { IdParamsDto } from '../dto/id-params.dto';
+import { ValidationExceptionFilter } from 'src/filters/validation-exception.filter';
 
 @Controller('tasks')
 export class TasksController {
@@ -21,22 +24,27 @@ export class TasksController {
   }
 
   @Get(':id')
-  getTask(@Param('id') id: string): Promise<Task> {
-    return this.tasksService.getTask(id);
+  getTask(@Param() idParamsDto: IdParamsDto): Promise<Task> {
+    return this.tasksService.getTask(idParamsDto);
   }
 
   @Post()
+  @UseFilters(new ValidationExceptionFilter())
   createTask(@Body() createTaskDto: CreateTaskDto) {
     return this.tasksService.createTask(createTaskDto);
   }
 
   @Patch(':id')
-  updateTask(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.updateTask(id, updateTaskDto);
+  @UseFilters(new ValidationExceptionFilter())
+  updateTask(
+    @Param() idParamsDto: IdParamsDto,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.tasksService.updateTask(idParamsDto, updateTaskDto);
   }
 
   @Delete(':id')
-  deleteTask(@Param('id') id: string) {
-    return this.tasksService.deleteTask(id);
+  deleteTask(@Param() idParamsDto: IdParamsDto) {
+    return this.tasksService.deleteTask(idParamsDto);
   }
 }

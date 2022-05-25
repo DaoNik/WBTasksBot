@@ -21,10 +21,7 @@ export class BoardColumn extends Model {
   @BelongsTo(() => Board)
   board: Board;
 
-  @Column({
-    validate: { min: 4, max: 50 },
-    defaultValue: 'Без названия',
-  })
+  @Column
   title: string;
 
   @HasMany(() => Task)

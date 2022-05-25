@@ -10,7 +10,10 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
+import { IdParamsDto } from '../dto/id-params.dto';
+import { ValidationExceptionFilter } from 'src/filters/validation-exception.filter';
 
 @Controller('columns')
 export class ColumnsController {
@@ -21,25 +24,27 @@ export class ColumnsController {
   }
 
   @Get(':id')
-  getColumn(@Param('id') id: string): Promise<BoardColumn> {
-    return this.columnsService.getColumn(id);
+  getColumn(@Param() idParamsDto: IdParamsDto): Promise<BoardColumn> {
+    return this.columnsService.getColumn(idParamsDto);
   }
 
   @Post()
+  @UseFilters(new ValidationExceptionFilter())
   createColumn(@Body() createColumnDto: CreateColumnDto) {
     return this.columnsService.createColumn(createColumnDto);
   }
 
   @Patch(':id')
+  @UseFilters(new ValidationExceptionFilter())
   updateColumn(
-    @Param('id') id: string,
+    @Param() idParamsDto: IdParamsDto,
     @Body() updateColumnDto: UpdateColumnDto,
   ) {
-    return this.columnsService.updateColumn(id, updateColumnDto);
+    return this.columnsService.updateColumn(idParamsDto, updateColumnDto);
   }
 
   @Delete(':id')
-  deleteColumn(@Param('id') id: string) {
-    return this.columnsService.deleteColumn(id);
+  deleteColumn(@Param() idParamsDto: IdParamsDto) {
+    return this.columnsService.deleteColumn(idParamsDto);
   }
 }
