@@ -1,5 +1,5 @@
 import { BoardColumn } from './columns/column.model';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Board } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -15,12 +15,20 @@ export class BoardsService {
   }
 
   async getBoard(idParamsDto: IdParamsDto): Promise<Board> {
-    return this.boardModel.findOne({
-      where: {
-        id: idParamsDto.id,
-      },
-      include: [BoardColumn],
-    });
+    return this.boardModel
+      .findOne({
+        where: {
+          id: idParamsDto.id,
+        },
+        include: [BoardColumn],
+      })
+      .then((board) => {
+        if (!board) {
+          throw new NotFoundException('Доски с таким ID не существует');
+        }
+
+        return board;
+      });
   }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
@@ -29,15 +37,22 @@ export class BoardsService {
 
   async updateBoard(idParamsDto: IdParamsDto, updateBoardDto: UpdateBoardDto) {
     // НУЖНО ПОМЕНЯТЬ(НАВЕРНОЕ)
-    const board = await this.boardModel.update(
-      { ...updateBoardDto },
-      {
-        where: {
-          id: idParamsDto.id,
+    return this.boardModel
+      .update(
+        { ...updateBoardDto },
+        {
+          where: {
+            id: idParamsDto.id,
+          },
+          returning: true,
         },
-        returning: true,
-      },
-    );
-    return board[1][0];
+      )
+      .then((board) => {
+        if (!board[1][0]) {
+          throw new NotFoundException('Доски с таким ID не существует');
+        }
+
+        return board[1][0];
+      });
   }
 }

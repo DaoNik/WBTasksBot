@@ -2,7 +2,7 @@ import { Task } from './../tasks/task.model';
 import { UpdateColumnDto } from './../dto/update-column.dto';
 import { CreateColumnDto } from './../dto/create-column.dto';
 import { BoardColumn } from './column.model';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { IdParamsDto } from '../dto/id-params.dto';
 
@@ -17,12 +17,20 @@ export class ColumnsService {
   }
 
   async getColumn(idParamsDto: IdParamsDto): Promise<BoardColumn> {
-    return this.boardColumnModel.findOne({
-      where: {
-        id: idParamsDto.id,
-      },
-      include: [Task],
-    });
+    return this.boardColumnModel
+      .findOne({
+        where: {
+          id: idParamsDto.id,
+        },
+        include: [Task],
+      })
+      .then((column) => {
+        if (!column) {
+          throw new NotFoundException('Колонки с таким ID не существует');
+        }
+
+        return column;
+      });
   }
 
   async createColumn(createColumnDto: CreateColumnDto) {
@@ -33,16 +41,23 @@ export class ColumnsService {
     idParamsDto: IdParamsDto,
     updateColumnDto: UpdateColumnDto,
   ) {
-    const column = await this.boardColumnModel.update(
-      { ...updateColumnDto },
-      {
-        where: {
-          id: idParamsDto.id,
+    return this.boardColumnModel
+      .update(
+        { ...updateColumnDto },
+        {
+          where: {
+            id: idParamsDto.id,
+          },
+          returning: true,
         },
-        returning: true,
-      },
-    );
-    return column[1][0];
+      )
+      .then((column) => {
+        if (!column[1][0]) {
+          throw new NotFoundException('Колонки с таким ID не существует');
+        }
+
+        return column[1][0];
+      });
   }
 
   async deleteColumn(idParamsDto: IdParamsDto) {
@@ -52,6 +67,12 @@ export class ColumnsService {
           id: idParamsDto.id,
         },
       })
-      .then(() => idParamsDto.id);
+      .then((deletedRows) => {
+        if (!deletedRows) {
+          throw new NotFoundException('Колонки с таким ID не существует');
+        }
+
+        return idParamsDto.id;
+      });
   }
 }
