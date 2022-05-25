@@ -3,6 +3,7 @@ import { CreateTaskDto } from './../dto/create-task.dto';
 import { Task } from './task.model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { IdParamsDto } from '../dto/id-params.dto';
 
 @Injectable()
 export class TasksService {
@@ -12,10 +13,10 @@ export class TasksService {
     return this.taskModel.findAll();
   }
 
-  async getTask(id: string): Promise<Task> {
+  async getTask(idParamsDto: IdParamsDto): Promise<Task> {
     return this.taskModel.findOne({
       where: {
-        id,
+        id: idParamsDto.id,
       },
     });
   }
@@ -24,12 +25,12 @@ export class TasksService {
     return this.taskModel.create({ ...createTaskDto });
   }
 
-  async updateTask(id: string, updateTaskDto: UpdateTaskDto) {
+  async updateTask(idParamsDto: IdParamsDto, updateTaskDto: UpdateTaskDto) {
     const task = await this.taskModel.update(
       { ...updateTaskDto },
       {
         where: {
-          id,
+          id: idParamsDto.id,
         },
         returning: true,
       },
@@ -37,13 +38,13 @@ export class TasksService {
     return task[1][0];
   }
 
-  async deleteTask(id: string) {
+  async deleteTask(idParamsDto: IdParamsDto) {
     return this.taskModel
       .destroy({
         where: {
-          id,
+          id: idParamsDto.id,
         },
       })
-      .then(() => id);
+      .then(() => idParamsDto.id);
   }
 }

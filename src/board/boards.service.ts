@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Board } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { IdParamsDto } from './dto/id-params.dto';
 
 @Injectable()
 export class BoardsService {
@@ -13,10 +14,10 @@ export class BoardsService {
     return 'Здесь будут все доски';
   }
 
-  async getBoard(id: string): Promise<Board> {
+  async getBoard(idParamsDto: IdParamsDto): Promise<Board> {
     return this.boardModel.findOne({
       where: {
-        id,
+        id: idParamsDto.id,
       },
       include: [BoardColumn],
     });
@@ -26,13 +27,13 @@ export class BoardsService {
     return this.boardModel.create({ ...createBoardDto });
   }
 
-  async updateBoard(id: string, updateBoardDto: UpdateBoardDto) {
+  async updateBoard(idParamsDto: IdParamsDto, updateBoardDto: UpdateBoardDto) {
     // НУЖНО ПОМЕНЯТЬ(НАВЕРНОЕ)
     const board = await this.boardModel.update(
       { ...updateBoardDto },
       {
         where: {
-          id,
+          id: idParamsDto.id,
         },
         returning: true,
       },

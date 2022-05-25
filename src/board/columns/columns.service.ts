@@ -4,6 +4,7 @@ import { CreateColumnDto } from './../dto/create-column.dto';
 import { BoardColumn } from './column.model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { IdParamsDto } from '../dto/id-params.dto';
 
 @Injectable()
 export class ColumnsService {
@@ -15,10 +16,10 @@ export class ColumnsService {
     return this.boardColumnModel.findAll();
   }
 
-  async getColumn(id: string): Promise<BoardColumn> {
+  async getColumn(idParamsDto: IdParamsDto): Promise<BoardColumn> {
     return this.boardColumnModel.findOne({
       where: {
-        id,
+        id: idParamsDto.id,
       },
       include: [Task],
     });
@@ -28,12 +29,15 @@ export class ColumnsService {
     return this.boardColumnModel.create({ ...createColumnDto });
   }
 
-  async updateColumn(id: string, updateColumnDto: UpdateColumnDto) {
+  async updateColumn(
+    idParamsDto: IdParamsDto,
+    updateColumnDto: UpdateColumnDto,
+  ) {
     const column = await this.boardColumnModel.update(
       { ...updateColumnDto },
       {
         where: {
-          id,
+          id: idParamsDto.id,
         },
         returning: true,
       },
@@ -41,13 +45,13 @@ export class ColumnsService {
     return column[1][0];
   }
 
-  async deleteColumn(id: string) {
+  async deleteColumn(idParamsDto: IdParamsDto) {
     return this.boardColumnModel
       .destroy({
         where: {
-          id,
+          id: idParamsDto.id,
         },
       })
-      .then(() => id);
+      .then(() => idParamsDto.id);
   }
 }
