@@ -6,6 +6,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
+import { Board } from '../board.model';
 import { BoardColumn } from '../columns/column.model';
 
 @Table
@@ -19,6 +20,13 @@ export class Task extends Model {
 
   @BelongsTo(() => BoardColumn)
   column: BoardColumn;
+
+  @ForeignKey(() => Board)
+  @Column
+  boardId: number;
+
+  @BelongsTo(() => Board)
+  board: Board;
 
   @Column
   title: string;

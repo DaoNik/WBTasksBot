@@ -11,6 +11,10 @@ export class CreateTaskDto {
   @IsNotEmpty({ message: 'Поле с ID колонки не может быть пустым' })
   columnId: number;
 
+  @IsInt({ message: 'Поле с ID доски должно быть целым числом' })
+  @IsNotEmpty({ message: 'Поле с ID доски не может быть пустым' })
+  boardId: number;
+
   @IsString({ message: 'Поле с названием задачи должно быть строкой' })
   @Length(4, 100, {
     message: 'Поле с названием задачи должно быть от 4 до 100 символов',

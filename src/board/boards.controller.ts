@@ -30,6 +30,11 @@ export class BoardsController {
     return this.boardsService.getBoard(idParamsDto);
   }
 
+  @Get(':id/tasks')
+  getBoardTasks(@Param() idParamsDto: IdParamsDto): Promise<Board[]> {
+    return this.boardsService.getBoardTasks(idParamsDto);
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseFilters(new ValidationExceptionFilter())
