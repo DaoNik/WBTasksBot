@@ -10,8 +10,10 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import { IdParamsDto } from '../dto/id-params.dto';
+import { ValidationExceptionFilter } from 'src/filters/validation-exception.filter';
 
 @Controller('columns')
 export class ColumnsController {
@@ -27,11 +29,13 @@ export class ColumnsController {
   }
 
   @Post()
+  @UseFilters(new ValidationExceptionFilter())
   createColumn(@Body() createColumnDto: CreateColumnDto) {
     return this.columnsService.createColumn(createColumnDto);
   }
 
   @Patch(':id')
+  @UseFilters(new ValidationExceptionFilter())
   updateColumn(
     @Param() idParamsDto: IdParamsDto,
     @Body() updateColumnDto: UpdateColumnDto,

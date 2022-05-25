@@ -9,9 +9,11 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import { UpdateTaskDto } from '../dto/update-task.dto';
 import { IdParamsDto } from '../dto/id-params.dto';
+import { ValidationExceptionFilter } from 'src/filters/validation-exception.filter';
 
 @Controller('tasks')
 export class TasksController {
@@ -27,11 +29,13 @@ export class TasksController {
   }
 
   @Post()
+  @UseFilters(new ValidationExceptionFilter())
   createTask(@Body() createTaskDto: CreateTaskDto) {
     return this.tasksService.createTask(createTaskDto);
   }
 
   @Patch(':id')
+  @UseFilters(new ValidationExceptionFilter())
   updateTask(
     @Param() idParamsDto: IdParamsDto,
     @Body() updateTaskDto: UpdateTaskDto,

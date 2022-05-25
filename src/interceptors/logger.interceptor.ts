@@ -4,11 +4,10 @@ import {
   ExecutionContext,
   CallHandler,
   Logger,
-  HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
@@ -24,19 +23,14 @@ export class LoggerInterceptor implements NestInterceptor {
       `[Запрос] IP: ${ip}. User agent: ${userAgent}. Метод: ${method}. URL: ${url}`,
     );
 
-    return next.handle().pipe(
-      tap(() =>
-        this.logger.log(
-          `[Ответ] IP: ${ip}. User agent: ${userAgent}. Метод: ${method}. Статус: ${res.statusCode}. URL: ${url}`,
+    return next
+      .handle()
+      .pipe(
+        tap(() =>
+          this.logger.log(
+            `[Ответ] IP: ${ip}. User agent: ${userAgent}. Метод: ${method}. Статус: ${res.statusCode}. URL: ${url}`,
+          ),
         ),
-      ),
-      catchError((err: HttpException) => {
-        this.logger.log(
-          `[Ошибка] IP: ${ip}. User agent: ${userAgent}. Метод: ${method}. Статус: ${err.getStatus()}. URL: ${url}`,
-        );
-
-        return of(err.getResponse());
-      }),
-    );
+      );
   }
 }
