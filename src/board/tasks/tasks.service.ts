@@ -1,13 +1,21 @@
 import { UpdateTaskDto } from './../dto/update-task.dto';
 import { CreateTaskDto } from './../dto/create-task.dto';
 import { Task } from './task.model';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { IdParamsDto } from '../dto/id-params.dto';
+import { BoardColumn } from '../columns/column.model';
 
 @Injectable()
 export class TasksService {
-  constructor(@InjectModel(Task) private taskModel: typeof Task) {}
+  constructor(
+    @InjectModel(Task) private taskModel: typeof Task,
+    @InjectModel(BoardColumn) private columnModel: typeof BoardColumn,
+  ) {}
 
   async getTasks() {
     return this.taskModel.findAll();
@@ -30,10 +38,26 @@ export class TasksService {
   }
 
   async createTask(createTaskDto: CreateTaskDto) {
+    const columnId = createTaskDto.columnId;
+
+    await this.columnModel
+      .findOne({ where: { id: columnId } })
+      .then((column) => {
+        if (column.boardId !== createTaskDto.boardId) {
+          throw new BadRequestException(
+            'ID доски у колонки и у задачи должны совпадать',
+          );
+        }
+      });
+
     return this.taskModel.create({ ...createTaskDto });
   }
 
   async updateTask(idParamsDto: IdParamsDto, updateTaskDto: UpdateTaskDto) {
+    if (updateTaskDto['boardId']) {
+      throw new BadRequestException('Менять ID доски у задачи запрещено');
+    }
+
     return this.taskModel
       .update(
         { ...updateTaskDto },

@@ -1,6 +1,6 @@
 import { IsNumberString } from 'class-validator';
 
 export class IdParamsDto {
-  @IsNumberString()
+  @IsNumberString({}, { message: 'Неверный ID' })
   id: number;
 }

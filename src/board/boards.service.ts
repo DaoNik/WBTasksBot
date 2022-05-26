@@ -5,6 +5,7 @@ import { Board } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { IdParamsDto } from './dto/id-params.dto';
+import { Task } from './tasks/task.model';
 
 @Injectable()
 export class BoardsService {
@@ -12,6 +13,13 @@ export class BoardsService {
 
   async getBoards() {
     return 'Здесь будут все доски';
+  }
+
+  async getBoardTasks(idParamsDto: IdParamsDto) {
+    return this.boardModel.findAll({
+      where: { id: idParamsDto.id },
+      include: [Task],
+    });
   }
 
   async getBoard(idParamsDto: IdParamsDto): Promise<Board> {
