@@ -35,13 +35,6 @@ export class BoardsController {
     return this.boardsService.getBoardTasks(idParamsDto);
   }
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  @UseFilters(new ValidationExceptionFilter())
-  createBoard(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardsService.createBoard(createBoardDto);
-  }
-
   @Patch(':id')
   @UseFilters(new ValidationExceptionFilter())
   updateBoard(
@@ -49,5 +42,12 @@ export class BoardsController {
     @Body() updateBoardDto: UpdateBoardDto,
   ) {
     return this.boardsService.updateBoard(idParamsDto, updateBoardDto);
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  @UseFilters(new ValidationExceptionFilter())
+  createBoard(@Body() createBoardDto: CreateBoardDto) {
+    return this.boardsService.createBoard(createBoardDto);
   }
 }
