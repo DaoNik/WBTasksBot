@@ -2,7 +2,11 @@ import { Task } from './../tasks/task.model';
 import { UpdateColumnDto } from './../dto/update-column.dto';
 import { CreateColumnDto } from './../dto/create-column.dto';
 import { BoardColumn } from './column.model';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { IdParamsDto } from '../dto/id-params.dto';
 
@@ -55,12 +59,24 @@ export class ColumnsService {
         if (!column[1][0]) {
           throw new NotFoundException('Колонки с таким ID не существует');
         }
-
         return column[1][0];
       });
   }
 
   async deleteColumn(idParamsDto: IdParamsDto) {
+    await this.boardColumnModel
+      .findOne({
+        where: { id: idParamsDto.id },
+        include: [Task],
+      })
+      .then((column) => {
+        if (column.tasks.length) {
+          throw new ConflictException(
+            'Нельзя удалить колонку, в которой есть задачи',
+          );
+        }
+      });
+
     return this.boardColumnModel
       .destroy({
         where: {
