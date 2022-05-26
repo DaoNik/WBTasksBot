@@ -61,11 +61,13 @@ export class CreateTaskDto {
     message: 'Поле с приоритетом задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с приоритетом задачи не может быть пустым' })
+  @IsOptional()
   priority: string;
 
   @IsString({
     message: 'Поле со статусом задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле со статусом задачи не может быть пустым' })
+  @IsOptional()
   status: string;
 }

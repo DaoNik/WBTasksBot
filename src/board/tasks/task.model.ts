@@ -46,9 +46,9 @@ export class Task extends Model {
   @Column({ defaultValue: '' })
   category: string;
 
-  @Column
+  @Column({ defaultValue: '' })
   priority: string;
 
-  @Column
+  @Column({ defaultValue: '' })
   status: string;
 }
