@@ -6,6 +6,7 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { IdParamsDto } from './dto/id-params.dto';
 import { Task } from './tasks/task.model';
+import sequelize from 'sequelize';
 
 @Injectable()
 export class BoardsService {
@@ -28,7 +29,22 @@ export class BoardsService {
         where: {
           id: idParamsDto.id,
         },
-        include: [BoardColumn],
+        include: [
+          {
+            model: BoardColumn,
+            as: 'columns',
+          },
+        ],
+        order: [
+          [
+            {
+              model: BoardColumn,
+              as: 'columns',
+            },
+            'id',
+            'ASC',
+          ],
+        ],
       })
       .then((board) => {
         if (!board) {
