@@ -26,7 +26,12 @@ export class ColumnsService {
         where: {
           id: idParamsDto.id,
         },
-        include: [Task],
+        include: [
+          {
+            model: Task,
+            as: 'tasks',
+          },
+        ],
       })
       .then((column) => {
         if (!column) {

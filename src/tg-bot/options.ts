@@ -32,7 +32,7 @@ export const taskOptions = {
         {
           type: 'web_app',
           text: 'Chat',
-          web_app: { url: 'https://wbschool-chat.ru/home' },
+          web_app: { url: 'https://wbbase.site/tasks/form' },
         },
       ],
       [
