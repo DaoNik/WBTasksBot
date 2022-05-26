@@ -87,11 +87,7 @@ export class ColumnsService {
           id: idParamsDto.id,
         },
       })
-      .then((deletedRows) => {
-        if (!deletedRows) {
-          throw new NotFoundException('Колонки с таким ID не существует');
-        }
-
+      .then(() => {
         return idParamsDto.id;
       });
   }
