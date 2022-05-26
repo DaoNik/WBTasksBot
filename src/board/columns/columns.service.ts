@@ -70,6 +70,10 @@ export class ColumnsService {
         include: [Task],
       })
       .then((column) => {
+        if (!column) {
+          throw new NotFoundException('Колонки с таким ID не существует');
+        }
+
         if (column.tasks.length) {
           throw new ConflictException(
             'Нельзя удалить колонку, в которой есть задачи',
