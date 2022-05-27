@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as TelegramBot from 'node-telegram-bot-api';
-import {
-  gameOptions,
-  againOptions,
-  taskOptions,
-  newProblemsOptions,
-} from './options';
+import { taskOptions, newProblemsOptions } from './options';
 import { User } from './user.model';
 
 @Injectable()
@@ -34,7 +29,6 @@ export class TgBotService {
       Вот список того, что этот бот умеет:
       /start - выводит приветствие и список команд
       /info - выводит информацию о пользователе
-      /game - предлагает сыграть в угадай число
       /problem - помогает сообщить о проблеме(работает только в личном чате с ботом)`,
     );
   };
@@ -52,24 +46,10 @@ export class TgBotService {
     );
   };
 
-  startGame = async (chatId) => {
-    await this.bot.sendMessage(
-      chatId,
-      `Сейчас я загадаю цифру от 0 до 9, а ты должен ее угадать!`,
-    );
-    const randomNumber = Math.floor(Math.random() * 10);
-    this.chats[chatId] = randomNumber;
-    await this.bot.sendMessage(chatId, 'Отгадывай', gameOptions);
-  };
-
   start = async () => {
     this.bot.setMyCommands([
       { command: '/start', description: 'Начальное приветствие' },
       { command: '/info', description: 'Информация о пользователе' },
-      {
-        command: '/game',
-        description: 'Игра угадай цифру',
-      },
       { command: '/problem', description: 'Сообщить о проблеме' },
     ]);
 
@@ -84,9 +64,6 @@ export class TgBotService {
         }
         if (text.startsWith('/info')) {
           return this.sendInfo(chatId, msg);
-        }
-        if (text.startsWith('/game')) {
-          return this.startGame(chatId);
         }
         if (text.startsWith('/problem') && typeChat === 'private') {
           return this.bot.sendMessage(chatId, 'Выберите действие', taskOptions);
@@ -107,29 +84,10 @@ export class TgBotService {
       const data = msg.data;
       const chatId = msg.message.chat.id;
 
-      if (data === '/again') {
-        return this.startGame(chatId);
-      }
-
       if (data === '/updateProblem') {
         return this.bot.sendMessage(chatId, 'Пока что нечего менять...');
       }
       const user = await this.userModel.findOne({ where: { chatId } });
-      if (data === this.chats[chatId].toString()) {
-        user.right += 1;
-        await this.bot.sendMessage(
-          chatId,
-          `Поздравляю, ты отгадал цифру ${this.chats[chatId]}`,
-          againOptions,
-        );
-      } else {
-        user.wrong += 1;
-        await this.bot.sendMessage(
-          chatId,
-          `К сожалению, ты не угадал, бот загадал ${this.chats[chatId]}`,
-          againOptions,
-        );
-      }
       await user.save();
     });
   };
