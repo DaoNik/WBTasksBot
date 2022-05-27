@@ -20,11 +20,14 @@ export class Board extends Model {
   authors: string[];
 
   @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
-  respondents: string[];
+  departments: string[];
 
   @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   tags: string[];
 
   @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   categories: string[];
+
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
+  watchers: string[];
 }

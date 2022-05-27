@@ -38,7 +38,7 @@ export class Task extends Model {
   authors: string[];
 
   @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
-  respondents: string[];
+  departments: string[];
 
   @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
   tags: string[];
@@ -51,4 +51,13 @@ export class Task extends Model {
 
   @Column({ defaultValue: '' })
   status: string;
+
+  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
+  watchers: string[];
+
+  @Column({ defaultValue: '' })
+  deadline: string;
+
+  @Column({ defaultValue: '' })
+  contact: string;
 }
