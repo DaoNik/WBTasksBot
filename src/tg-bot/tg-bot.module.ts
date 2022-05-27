@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { TgBotService } from './tg-bot.service';
-import { User } from './user.model';
+import { Task } from 'src/board/tasks/task.model';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User])],
+  imports: [SequelizeModule.forFeature([Task])],
   providers: [TgBotService],
 })
 export class TgBotModule {

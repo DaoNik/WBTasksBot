@@ -11,10 +11,10 @@ export const taskOptions = {
     ],
   }),
 };
-export const newProblemsOptions = {
+export const linkChatOptions = {
   reply_markup: JSON.stringify({
     inline_keyboard: [
-      [{ text: 'Сообщить о проблеме', url: 'https://t.me/WBTasksBot' }],
+      [{ text: 'Перейти в чат с ботом', url: 'https://t.me/WBTasksBot' }],
     ],
   }),
 };

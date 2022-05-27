@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './tg-bot/user.model';
 import { TgBotModule } from './tg-bot/tg-bot.module';
 import { BoardModule } from './board/boards.module';
 import { Board } from './board/board.model';
@@ -24,7 +23,7 @@ import { join } from 'path';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [User, Board, BoardColumn, Task],
+      models: [Board, BoardColumn, Task],
       autoLoadModels: true,
       synchronize: true,
     }),
