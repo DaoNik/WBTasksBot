@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as TelegramBot from 'node-telegram-bot-api';
-import { taskOptions, newProblemsOptions } from './options';
-import { User } from './user.model';
+import { taskOptions, linkChatOptions } from './options';
+import { Task } from '../board/tasks/task.model';
 
 @Injectable()
 export class TgBotService {
   constructor(
-    @InjectModel(User)
-    private userModel: typeof User,
+    @InjectModel(Task)
+    private taskModel: typeof Task,
   ) {}
 
   bot = new TelegramBot(process.env.TOKEN, {
@@ -17,32 +17,38 @@ export class TgBotService {
   chats = {};
 
   startBot = async (chatId: number) => {
-    const user = await this.userModel.findOne({ where: { chatId } });
-
-    if (!user) {
-      await this.userModel.create({ chatId });
-    }
-
     await this.bot.sendMessage(
       chatId,
       `Приветствую тебя в телеграм боте для управления задачами.
       Вот список того, что этот бот умеет:
       /start - выводит приветствие и список команд
-      /info - выводит информацию о пользователе
+      /info - выводит информацию о пользователе (#123)(работает только в личном чате с ботом)
+      #номер_вашей_задачи - выводит статус вашей задачи
       /problem - помогает сообщить о проблеме(работает только в личном чате с ботом)`,
     );
   };
 
   sendInfo = async (chatId: number, msg) => {
-    const user = await this.userModel.findOne({ where: { chatId } });
-
     const name = msg.from.last_name
       ? `${msg.from.first_name} ${msg.from.last_name}`
       : msg.from.first_name;
 
-    await this.bot.sendMessage(
+    await this.bot.sendMessage(chatId, `Тебя зовут ${name}`);
+  };
+
+  sendStatus = async (chatId: number, msg) => {
+    const task = await this.taskModel.findOne({
+      where: {
+        id: msg.text.slice(1),
+      },
+      attributes: ['status'],
+    });
+    if (task?.status) {
+      return this.bot.sendMessage(chatId, `Статус этой задачи ${task.status}`);
+    }
+    return this.bot.sendMessage(
       chatId,
-      `Тебя зовут ${name}, в игре у тебя правильных ответов ${user.right}, неправильных ${user.wrong}`,
+      'Нет такой задачи, возможно, она уже была решена',
     );
   };
 
@@ -68,11 +74,14 @@ export class TgBotService {
         if (text.startsWith('/problem') && typeChat === 'private') {
           return this.bot.sendMessage(chatId, 'Выберите действие', taskOptions);
         }
+        if (text.startsWith('#') && typeChat === 'private') {
+          return this.sendStatus(chatId, msg);
+        }
         if (text.startsWith('/problem')) {
           return this.bot.sendMessage(
             chatId,
             'Перейдите в чат с ботом, чтобы сообщить о проблеме',
-            newProblemsOptions,
+            linkChatOptions,
           );
         }
       } catch (e) {
@@ -87,8 +96,6 @@ export class TgBotService {
       if (data === '/updateProblem') {
         return this.bot.sendMessage(chatId, 'Пока что нечего менять...');
       }
-      const user = await this.userModel.findOne({ where: { chatId } });
-      await user.save();
     });
   };
 }
