@@ -20,7 +20,7 @@ export class CreateBoardDto {
     message: 'Поле с отделами доски должно быть массивом строк',
   })
   @IsOptional()
-  respondents?: string[];
+  departments?: string[];
 
   @IsString({
     each: true,
@@ -35,4 +35,11 @@ export class CreateBoardDto {
   })
   @IsOptional()
   categories?: string[];
+
+  @IsString({
+    each: true,
+    message: 'Поле с наблюдателями доски должно быть массивом строк',
+  })
+  @IsOptional()
+  watchers?: string[];
 }

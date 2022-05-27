@@ -29,7 +29,7 @@ export class UpdateTaskDto {
 
   @IsString({
     each: true,
-    message: 'Поле с авторами задачи должно быть массивом строк',
+    message: 'Поле с ответственными за задачу должно быть массивом строк',
   })
   @IsOptional()
   authors?: string[];
@@ -39,7 +39,7 @@ export class UpdateTaskDto {
     message: 'Поле с отделами задачи должно быть массивом строк',
   })
   @IsOptional()
-  respondents?: string[];
+  departments?: string[];
 
   @IsString({
     each: true,
@@ -68,4 +68,25 @@ export class UpdateTaskDto {
   @IsNotEmpty({ message: 'Поле со статусом задачи не может быть пустым' })
   @IsOptional()
   status?: string;
+
+  @IsString({
+    each: true,
+    message: 'Поле с наблюдателями задачи должно быть массивом строк',
+  })
+  @IsOptional()
+  watchers?: string[];
+
+  @IsString({
+    message: 'Поле с дедлайном задачи должно быть строкой',
+  })
+  @IsNotEmpty({ message: 'Поле с дедлайном задачи не может быть пустым' })
+  @IsOptional()
+  deadline?: string;
+
+  @IsString({
+    message: 'Поле с автором задачи должно быть строкой',
+  })
+  @IsNotEmpty({ message: 'Поле с автором задачи не может быть пустым' })
+  @IsOptional()
+  contact?: string;
 }

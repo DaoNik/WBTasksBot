@@ -9,6 +9,8 @@ import { BoardModule } from './board/boards.module';
 import { Board } from './board/board.model';
 import { BoardColumn } from './board/columns/column.model';
 import { Task } from './board/tasks/task.model';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,6 +27,10 @@ import { Task } from './board/tasks/task.model';
       models: [User, Board, BoardColumn, Task],
       autoLoadModels: true,
       synchronize: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'src', 'form'),
+      serveRoot: '/api/form',
     }),
     TgBotModule,
     BoardModule,
