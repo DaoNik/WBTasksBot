@@ -12,6 +12,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { Comment } from './board/tasks/comments/comment.model';
+import { EventsGateway } from './events.gateway';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { APP_GUARD } from '@nestjs/core';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [Board, BoardColumn, Task],
+      models: [Board, BoardColumn, Task, Comment],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -42,6 +44,7 @@ import { APP_GUARD } from '@nestjs/core';
   ],
   controllers: [AppController],
   providers: [
+    EventsGateway,
     AppService,
     {
       provide: APP_GUARD,

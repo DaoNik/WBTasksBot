@@ -3,11 +3,13 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { Board } from '../board.model';
 import { BoardColumn } from '../columns/column.model';
+import { Comment } from './comments/comment.model';
 
 @Table
 export class Task extends Model {
@@ -60,4 +62,7 @@ export class Task extends Model {
 
   @Column({ defaultValue: '' })
   contact: string;
+
+  @HasMany(() => Comment)
+  comments: Comment[];
 }
