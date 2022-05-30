@@ -37,6 +37,7 @@ export class TgBotService {
   };
 
   sendStatus = async (chatId: number, msg) => {
+    console.log(msg.text.slice(1));
     const task = await this.taskModel.findOne({
       where: {
         id: msg.text.slice(1),
