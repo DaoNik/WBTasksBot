@@ -9,10 +9,11 @@ import { TasksController } from './tasks/tasks.controller';
 import { TasksService } from './tasks/tasks.service';
 import { ColumnsController } from './columns/columns.controller';
 import { ColumnsService } from './columns/columns.service';
+import { CommentsController } from './tasks/comments/comments.controller';
 
 @Module({
   imports: [SequelizeModule.forFeature([Board, BoardColumn, Task])],
-  controllers: [BoardsController, TasksController, ColumnsController],
+  controllers: [BoardsController, TasksController, ColumnsController, CommentsController],
   providers: [BoardsService, TasksService, ColumnsService],
 })
 export class BoardModule {}

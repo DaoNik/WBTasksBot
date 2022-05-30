@@ -1,4 +1,4 @@
-import { CreateTaskDto } from './../dto/create-task.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.model';
 import { TasksService } from './tasks.service';
 import {
@@ -11,7 +11,7 @@ import {
   Post,
   UseFilters,
 } from '@nestjs/common';
-import { UpdateTaskDto } from '../dto/update-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { IdParamsDto } from '../dto/id-params.dto';
 import { ValidationExceptionFilter } from 'src/filters/validation-exception.filter';
 

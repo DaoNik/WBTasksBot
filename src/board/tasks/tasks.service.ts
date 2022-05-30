@@ -1,5 +1,5 @@
-import { UpdateTaskDto } from './../dto/update-task.dto';
-import { CreateTaskDto } from './../dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.model';
 import {
   BadRequestException,

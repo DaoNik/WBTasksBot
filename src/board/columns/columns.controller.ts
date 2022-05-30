@@ -1,5 +1,5 @@
-import { UpdateColumnDto } from './../dto/update-column.dto';
-import { CreateColumnDto } from './../dto/create-column.dto';
+import { UpdateColumnDto } from './dto/update-column.dto';
+import { CreateColumnDto } from './dto/create-column.dto';
 import { BoardColumn } from './column.model';
 import { ColumnsService } from './columns.service';
 import {

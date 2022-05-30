@@ -10,6 +10,8 @@ import { BoardColumn } from './board/columns/column.model';
 import { Task } from './board/tasks/task.model';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -31,10 +33,20 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'src', 'form'),
       serveRoot: '/api/form',
     }),
+    ThrottlerModule.forRoot({
+      ttl: 15 * 60,
+      limit: 1500,
+    }),
     TgBotModule,
     BoardModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
