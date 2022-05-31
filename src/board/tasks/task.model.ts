@@ -33,16 +33,16 @@ export class Task extends Model {
   @Column
   title: string;
 
-  @Column({ defaultValue: '' })
-  description: string;
+  @Column({ type: DataType.ARRAY(DataType.STRING(8192)), defaultValue: [] })
+  description: string[];
 
-  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING(2048)), defaultValue: [] })
   authors: string[];
 
-  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING(2048)), defaultValue: [] })
   departments: string[];
 
-  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING(2048)), defaultValue: [] })
   tags: string[];
 
   @Column({ defaultValue: '' })
@@ -54,7 +54,7 @@ export class Task extends Model {
   @Column({ defaultValue: '' })
   status: string;
 
-  @Column({ type: DataType.ARRAY(DataType.STRING), defaultValue: [] })
+  @Column({ type: DataType.ARRAY(DataType.STRING(2048)), defaultValue: [] })
   watchers: string[];
 
   @Column({ defaultValue: '' })

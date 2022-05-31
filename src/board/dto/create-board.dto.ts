@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateBoardDto {
@@ -6,6 +7,7 @@ export class CreateBoardDto {
     message: 'Поле с названием доски должно быть от 4 до 100 символов',
   })
   @IsNotEmpty({ message: 'Поле с названием доски не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   title: string;
 
   @IsString({

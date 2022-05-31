@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -20,14 +21,18 @@ export class CreateTaskDto {
     message: 'Поле с названием задачи должно быть от 4 до 100 символов',
   })
   @IsNotEmpty({ message: 'Поле с названием задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   title: string;
 
   @IsString({
-    message: 'Поле с описанием должно быть строкой',
+    each: true,
+    message: 'Поле с массивом описания задачи не может быть пустым',
   })
-  @IsNotEmpty({ message: 'Поле с описанием задачи не может быть пустым' })
+  @IsNotEmpty({
+    message: 'Поле с массивом описания задачи не может быть пустым',
+  })
   @IsOptional()
-  description?: string;
+  description: string[];
 
   @IsString({
     each: true,
@@ -54,6 +59,7 @@ export class CreateTaskDto {
     message: 'Поле с категорией задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с категорией задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   category?: string;
 
@@ -61,6 +67,7 @@ export class CreateTaskDto {
     message: 'Поле с приоритетом задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с приоритетом задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   priority: string;
 
@@ -68,6 +75,7 @@ export class CreateTaskDto {
     message: 'Поле со статусом задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле со статусом задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   status: string;
 
@@ -82,6 +90,7 @@ export class CreateTaskDto {
     message: 'Поле с дедлайном задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с дедлайном задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   deadline?: string;
 
@@ -89,5 +98,6 @@ export class CreateTaskDto {
     message: 'Поле с автором задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с автором задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   contact: string;
 }
