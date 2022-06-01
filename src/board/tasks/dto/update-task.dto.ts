@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -17,15 +18,27 @@ export class UpdateTaskDto {
     message: 'Поле с названием задачи должно быть от 4 до 100 символов',
   })
   @IsNotEmpty({ message: 'Поле с названием задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   title?: string;
 
-  @IsString({
-    message: 'Поле с описанием должно быть строкой',
+  @Transform(({ value }) =>
+    Array.isArray(value)
+      ? value.map((item: any) =>
+          typeof item === 'string' ? item.trim() : item,
+        )
+      : value,
+  )
+  @Length(1, 1000, {
+    each: true,
+    message: 'Описание задачи должно быть от 1 до 1000 символов',
   })
-  @IsNotEmpty({ message: 'Поле с описанием задачи не может быть пустым' })
+  @IsString({
+    each: true,
+    message: 'Поле с описанием задачи должно быть массивом строк',
+  })
   @IsOptional()
-  description?: string;
+  description: string[];
 
   @IsString({
     each: true,
@@ -52,6 +65,7 @@ export class UpdateTaskDto {
     message: 'Поле с категорией задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с категорией задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   category?: string;
 
@@ -59,6 +73,7 @@ export class UpdateTaskDto {
     message: 'Поле с приоритетом задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с приоритетом задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   priority?: string;
 
@@ -66,6 +81,7 @@ export class UpdateTaskDto {
     message: 'Поле со статусом задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле со статусом задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   status?: string;
 
@@ -80,6 +96,7 @@ export class UpdateTaskDto {
     message: 'Поле с дедлайном задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с дедлайном задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   deadline?: string;
 
@@ -87,6 +104,15 @@ export class UpdateTaskDto {
     message: 'Поле с автором задачи должно быть строкой',
   })
   @IsNotEmpty({ message: 'Поле с автором задачи не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   contact?: string;
+
+  @IsString({
+    message: 'Поле с названием проекта должно быть строкой',
+  })
+  @IsNotEmpty({ message: 'Поле с названием проекта не может быть пустым' })
+  @Transform(({ value }) => value.trim())
+  @IsOptional()
+  project?: string;
 }

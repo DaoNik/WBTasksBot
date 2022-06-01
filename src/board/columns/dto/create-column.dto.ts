@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateColumnDto {
@@ -6,6 +7,7 @@ export class CreateColumnDto {
     message: 'Поле с названием колонки должно быть от 4 до 50 символов',
   })
   @IsNotEmpty({ message: 'Поле с названием колонки не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   title: string;
 
   @IsInt({ message: 'Поле с ID доски должно быть целым числом' })

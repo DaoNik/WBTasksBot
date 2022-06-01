@@ -43,7 +43,11 @@ export class ColumnsService {
   }
 
   async createColumn(createColumnDto: CreateColumnDto) {
-    return this.boardColumnModel.create({ ...createColumnDto });
+    return this.boardColumnModel
+      .create({ ...createColumnDto })
+      .then((column) => {
+        return { ...column['dataValues'], tasks: [] };
+      });
   }
 
   async updateColumn(

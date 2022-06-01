@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -12,6 +13,7 @@ export class UpdateColumnDto {
     message: 'Поле с названием колонки должно быть от 4 до 50 символов',
   })
   @IsNotEmpty({ message: 'Поле с названием колонки не может быть пустым' })
+  @Transform(({ value }) => value.trim())
   @IsOptional()
   title?: string;
 

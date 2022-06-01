@@ -1,6 +1,7 @@
 import {
   BelongsTo,
   Column,
+  DataType,
   ForeignKey,
   Model,
   Table,
@@ -19,7 +20,7 @@ export class Comment extends Model {
   @BelongsTo(() => Task)
   task: Task;
 
-  @Column
+  @Column({ type: DataType.STRING(512) })
   text: string;
 
   @Column
