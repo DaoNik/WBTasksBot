@@ -65,4 +65,7 @@ export class Task extends Model {
 
   @HasMany(() => Comment)
   comments: Comment[];
+
+  @Column({ defaultValue: '' })
+  project: string;
 }

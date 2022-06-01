@@ -30,4 +30,7 @@ export class Board extends Model {
 
   @Column({ type: DataType.ARRAY(DataType.STRING(2048)), defaultValue: [] })
   watchers: string[];
+
+  @Column({ type: DataType.ARRAY(DataType.STRING(2048)), defaultValue: [] })
+  projects: string[];
 }
