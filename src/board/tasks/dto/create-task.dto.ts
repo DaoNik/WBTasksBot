@@ -40,8 +40,19 @@ export class CreateTaskDto {
     message: 'Поле с описанием задачи должно быть массивом строк',
   })
   @IsOptional()
-  description: string[];
+  description?: string[];
 
+  @Transform(({ value }) =>
+    Array.isArray(value)
+      ? value.map((item: any) =>
+          typeof item === 'string' ? item.trim() : item,
+        )
+      : value,
+  )
+  @IsNotEmpty({
+    each: true,
+    message: 'Элементы массива с ответственными не могут быть пыстыми',
+  })
   @IsString({
     each: true,
     message: 'Поле с ответственными за задачу должно быть массивом строк',
@@ -49,6 +60,17 @@ export class CreateTaskDto {
   @IsOptional()
   authors?: string[];
 
+  @Transform(({ value }) =>
+    Array.isArray(value)
+      ? value.map((item: any) =>
+          typeof item === 'string' ? item.trim() : item,
+        )
+      : value,
+  )
+  @IsNotEmpty({
+    each: true,
+    message: 'Элементы массива с отделами не могут быть пыстыми',
+  })
   @IsString({
     each: true,
     message: 'Поле с отделами задачи должно быть массивом строк',
@@ -56,6 +78,17 @@ export class CreateTaskDto {
   @IsOptional()
   departments?: string[];
 
+  @Transform(({ value }) =>
+    Array.isArray(value)
+      ? value.map((item: any) =>
+          typeof item === 'string' ? item.trim() : item,
+        )
+      : value,
+  )
+  @IsNotEmpty({
+    each: true,
+    message: 'Элементы массива с тегами не могут быть пыстыми',
+  })
   @IsString({
     each: true,
     message: 'Поле с тегами задачи должно быть массивом строк',
@@ -87,6 +120,17 @@ export class CreateTaskDto {
   @IsOptional()
   status: string;
 
+  @Transform(({ value }) =>
+    Array.isArray(value)
+      ? value.map((item: any) =>
+          typeof item === 'string' ? item.trim() : item,
+        )
+      : value,
+  )
+  @IsNotEmpty({
+    each: true,
+    message: 'Элементы массива с наблюдателями не могут быть пыстыми',
+  })
   @IsString({
     each: true,
     message: 'Поле с наблюдателями задачи должно быть массивом строк',
