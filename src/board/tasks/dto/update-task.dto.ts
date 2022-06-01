@@ -22,12 +22,20 @@ export class UpdateTaskDto {
   @IsOptional()
   title?: string;
 
+  @Transform(({ value }) =>
+    Array.isArray(value)
+      ? value.map((item: any) =>
+          typeof item === 'string' ? item.trim() : item,
+        )
+      : value,
+  )
+  @Length(1, 1000, {
+    each: true,
+    message: 'Описание задачи должно быть от 1 до 1000 символов',
+  })
   @IsString({
     each: true,
-    message: 'Поле с массивом описания задачи не может быть пустым',
-  })
-  @IsNotEmpty({
-    message: 'Поле с массивом описания задачи не может быть пустым',
+    message: 'Поле с описанием задачи должно быть массивом строк',
   })
   @IsOptional()
   description: string[];
@@ -99,4 +107,12 @@ export class UpdateTaskDto {
   @Transform(({ value }) => value.trim())
   @IsOptional()
   contact?: string;
+
+  @IsString({
+    message: 'Поле с названием проекта должно быть строкой',
+  })
+  @IsNotEmpty({ message: 'Поле с названием проекта не может быть пустым' })
+  @Transform(({ value }) => value.trim())
+  @IsOptional()
+  project?: string;
 }

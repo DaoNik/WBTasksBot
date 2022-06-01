@@ -44,4 +44,11 @@ export class CreateBoardDto {
   })
   @IsOptional()
   watchers?: string[];
+
+  @IsString({
+    each: true,
+    message: 'Поле с проектами должно быть массивом строк',
+  })
+  @IsOptional()
+  projects: string[];
 }
