@@ -5,7 +5,7 @@ export const taskOptions = {
         {
           type: 'web_app',
           text: 'Сообщить о проблеме',
-          web_app: { url: 'https://wbbase.site/api/form' },
+          web_app: { url: 'https://wbbase.site/form-issue' },
         },
       ],
     ],
